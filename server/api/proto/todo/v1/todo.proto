@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package proto.todo.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/mamoruuji/grpc_stady_api/gen/proto/todo/v1;todov1";
+
+message TodoData {
+  int32 id = 1;
+  string title = 2;
+  string context = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+}
+
+message ListTodosRequest {}
+
+message ListTodosResponse {
+  repeated TodoData todos = 1;
+}
+
+message AddTodoRequest {
+  string title = 1;
+  string context = 2;
+}
+
+message AddTodoResponse {
+  int32 id = 1;
+}
+
+message DeleteTodoRequest {
+  int32 id = 1;
+}
+
+message DeleteTodoResponse {}
+
+message UpdateTodoStatusRequest {
+  int32 id = 1;
+  string title = 2;
+  string context = 3;
+}
+
+message UpdateTodoStatusResponse {}
+
+service TodoService {
+  rpc ListTodos(ListTodosRequest) returns (ListTodosResponse) {}
+  // rpc ListTodosByClientStreaming(stream ListTodosRequest) returns (ListTodosResponse) {}
+  // rpc ListTodosByServerStreaming(ListTodosRequest) returns (stream ListTodosResponse) {}
+  rpc AddTodo(AddTodoRequest) returns (AddTodoResponse) {}
+  rpc DeleteTodo(DeleteTodoRequest) returns (DeleteTodoResponse) {}
+  rpc UpdateTodoStatus(UpdateTodoStatusRequest) returns (UpdateTodoStatusResponse) {}
+}

@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  api:
+    image: grpc_stady/api:1.0
+    build: ./server
+    container_name: 'grpc_stady_server'
+    ports:
+      - "8080:8080"
+    networks:
+      - network
+    stdin_open: true
+    tty: true
+    working_dir: '/go/src/github.com/mamoruuji/grpc_stady_api'
+    volumes:
+      - ./server/api:/go/src/github.com/mamoruuji/grpc_stady_api
+  db:
+    image: grpc_stady/db:1.0
+    build: ./db
+    container_name: grpc_stady_postgresql
+    command: -c 'config_file=/etc/postgresql/postgresql.conf'
+    ports:
+      - "5432:5432"
+    networks:
+      - network
+    env_file:
+      - ./db/connection.env
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+      - ./db/postgresql.conf:/etc/postgresql/postgresql.conf
+    restart: always
+
+networks:
+  network:
+    driver: bridge
+    # internal: true

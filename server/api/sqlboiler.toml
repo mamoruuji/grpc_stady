@@ -1,0 +1,11 @@
+pkname="models"
+output="db/models"
+[psql]
+  dbname = "grpc_stady"
+  host   = "db"
+  port   = 5432
+  user   = "postgres"
+  pass   = "pass"
+  sslmode = "disable"
+  schema = "grpc_stady_schema"
+  blacklist = ["migrations", "other"]
